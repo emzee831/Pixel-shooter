@@ -215,6 +215,7 @@ class Player {
         this.name = name;
         this.points = 0;
         this.display = display;
+        this.winnerstate = winnerstate
     }
     totalScore(pointsValue) {
         this.points = pointsValue;
