@@ -57,3 +57,59 @@ body {
     top: 200px;
     visibility: hidden;
 }
+
+.total-score {
+    color: rgb(121, 81, 81);
+    background-color: rgb(0, 17, 255);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* display: flex; */
+    font-size: 30pt;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    display: none;
+    flex-direction: column;
+}
+
+.total-score button {
+    font-size: 3rem;
+    background-color: white;
+    border: 1px solid black;
+    padding: .25em .5em;
+    cursor: pointer;
+}
+
+.total-score .show {
+    display: flex;
+}
+
+.winner-message {
+    color: rgb(248, 56, 56);
+    background-color: rgb(0, 60, 255);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* display: flex; */
+    font-size: 30pt;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    display: none;
+    flex-direction: column;
+}
+
+.winner-message button {
+    font-size: 3rem;
+    background-color: white;
+    border: 1px solid black;
+    padding: .25em .5em;
+    cursor: pointer;
+}
+
+.winner-message .show {
+    display: flex;
+}

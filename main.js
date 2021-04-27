@@ -4,6 +4,11 @@ var lastLoopRun = 0;
 var score = 0;
 var gametimelength = 0;
 
+//player turn global variable
+const P1 = ""
+const P2 = ""
+let currentPlayer = 1
+
 //keyboard global variables
 var LEFT_KEY = 37;
 var UP_KEY = 38;
@@ -131,6 +136,13 @@ function gameOver() {
     laser.style.visibility = 'hidden';
     element = document.getElementById('gameover');
     element.style.visibility = 'visible';
+    document.getElementById("totalscore").classList.add("show")
+    document.getElementById("winnermessage").classList.add("show")
+    if (currentPlayer == 1) {
+        currentPlayer++
+    } else if (currentPlayer == 2) {
+
+    }
 }
 
 //show sprites function
@@ -190,11 +202,32 @@ function gameLoop() {
 
         lastLoopRun = new Date().getTime();
         gametimelength++;
-        console.log(gametimelength);
+        // console.log(gametimelength);
     }
 
     setTimeout('gameLoop();', 2);
+
 }
+
+//this class provides score count for both players
+class Player {
+    constructor(name, display, winnerstate) {
+        this.name = name;
+        this.points = 0;
+        this.display = display;
+    }
+    totalScore(pointsValue) {
+        this.points = pointsValue;
+        this.display.children[0].innerText = this.points
+        console.log(pointsValue);
+    }
+    setup() {
+        this.display = score
+        return this;
+    }
+}
+
+
 
 document.onkeydown = function(evt) {
     toggleKey(evt.keyCode, true);
@@ -206,7 +239,13 @@ document.onkeyup = function(evt) {
 
 // function to set default position of shooter1 
 let player1Default = createSprite('player1', 600, 900, 20, 20); // setting up player 1 default map
-let laser1Defualt = createSprite('laser1', 0, -120, 2, 50);
+let laser1Defualt = createSprite('laser1', 0, -120, 2, 50); // setting enemies location and size default
 
+//setting up players
+const player1 = new Player('player1', document.getElementById("totalscore"), document.getElementById("winnermessage"))
+const player2 = new Player('player1', document.getElementById("totalscore"), document.getElementById("winnermessage"))
+
+player1.setup();
+player2.setup();
 
 gameLoop();
