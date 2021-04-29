@@ -141,10 +141,10 @@ function checkCollisions() {
             i--;
             laser1Defualt.y = -laser1Defualt.h;
             score += 100; //getting score
-        } else if (intersects(player1Default, enemies[i])) {
+        } else if (intersects(player2Default, enemies[i])) {
             gameOver();
         } else if (intersects(player1Default, enemies[i])) {
-            finalScore();
+            gameOver2();
         } else if (enemies[i].y + enemies[i].h >= 1000) {
             let element = document.getElementById(enemies[i].element);
             element.style.visibility = 'hidden';
@@ -214,9 +214,9 @@ function gameOver2() {
     let laser = document.getElementById(laser2Defualt.element);
     element.style.visibility = 'hidden';
     laser.style.visibility = 'hidden';
-    element = document.getElementById('winnermessage');
+    element = document.getElementById('gameover');
     element.style.visibility = 'visible';
-    let totalScoreElement = document.getElementById("winnermessage")
+    let totalScoreElement = document.getElementById("gameover")
     totalScoreElement.classList.add("show")
         // totalScoreElement.firstChild.innerText = "testing" + score
     document.getElementById("displayscore").innerText = "Player 2 score is " + score
@@ -385,7 +385,7 @@ function addEnemy() {
     }
     if (getRandom(interval) == 0) { //generating random enemies amount
         let elementName = 'enemy' + getRandom(1000000000);
-        let enemy = createSprite(elementName, getRandom(900), -10, 15, 15)
+        let enemy = createSprite(elementName, getRandom(900), -10, 20, 20)
         let element = document.createElement('div');
         element.id = enemy.element;
         element.className = 'enemy';
