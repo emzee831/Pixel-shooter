@@ -5,9 +5,13 @@ var score = 0;
 var gametimelength = 0;
 
 //player turn global variable
-const P1 = ""
-const P2 = ""
+let P1Score = 0;
+let P2Score = 0;
+
 let currentPlayer = 1
+
+//global variable for restart
+// var requestId;
 
 //keyboard global variables
 var LEFT_KEY = 37;
@@ -106,6 +110,26 @@ function handleControls() {
     setBoundry(player1Default);
 }
 
+function handleControls2() {
+    if (controller.up) {
+        player2Default.y -= moveModifer;
+    }
+    if (controller.down) {
+        player2Default.y += moveModifer;
+    }
+    if (controller.left) {
+        player2Default.x -= moveModifer;
+    }
+    if (controller.right) {
+        player2Default.x += moveModifer;
+    }
+    if (controller.space && laser2Defualt.y <= -1) { // controls when you can refire laser 
+        laser2Defualt.x = player2Default.x + -10;
+        laser2Defualt.y = player2Default.y - laser2Defualt.h;
+    }
+    setBoundry(player2Default);
+}
+
 // checking collisions
 function checkCollisions() {
     for (let i = 0; i < enemies.length; i++) {
@@ -119,7 +143,9 @@ function checkCollisions() {
             score += 100; //getting score
         } else if (intersects(player1Default, enemies[i])) {
             gameOver();
-        } else if (enemies[i].y + enemies[i].h >= 1000) { // removes enemies after a certain part of the screen
+        } else if (intersects(player1Default, enemies[i])) {
+            finalScore();
+        } else if (enemies[i].y + enemies[i].h >= 1000) {
             let element = document.getElementById(enemies[i].element);
             element.style.visibility = 'hidden';
             element.parentNode.removeChild(element);
@@ -129,26 +155,198 @@ function checkCollisions() {
     }
 }
 
+// function checkCollisions2() {
+//     for (let i = 0; i < enemies.length; i++) {
+//         if (intersects(laser2Defualt, enemies[i])) {
+//             let element = document.getElementById(enemies[i].element);
+//             element.style.visibility = 'hidden';
+//             element.parentNode.removeChild(element);
+//             enemies.splice(i, 1);
+//             i--;
+//             laser2Defualt.y = -laser2Defualt.h;
+//             score += 100; //getting score
+//         } else if (intersects(player2Default, enemies[i])) {
+//             gameOver2();
+//         }
+//         else if (intersects(player2Default, enemies[i])) {
+//                    finalScore();*/
+//         else if (enemies[i].y + enemies[i].h >= 1000) { 
+//             let element = document.getElementById(enemies[i].element);
+//             element.style.visibility = 'hidden';
+//             element.parentNode.removeChild(element);
+//             enemies.splice(i, 1);
+//             i--;
+//         }
+//     }
+// }
+
+
+//gameover function
 function gameOver() {
     let element = document.getElementById(player1Default.element);
     let laser = document.getElementById(laser1Defualt.element);
     element.style.visibility = 'hidden';
     laser.style.visibility = 'hidden';
-    element = document.getElementById('gameover');
-    element.style.visibility = 'visible';
-    document.getElementById("totalscore").classList.add("show")
-    document.getElementById("winnermessage").classList.add("show")
-    if (currentPlayer == 1) {
-        currentPlayer++
-    } else if (currentPlayer == 2) {
-
+    // element = document.getElementById('gameover');
+    // element.style.visibility = 'visible';
+    let totalScoreElement = document.getElementById("totalscore")
+    totalScoreElement.classList.add("show")
+        // totalScoreElement.firstChild.innerText = "testing" + score
+    document.getElementById("displayscore").innerText = "Player 1 score is " + score
+    if (player1Default == P1Score) {
+        P1Score += score
     }
+    // console.log(totalScoreElement.firstChild);
+    // text('Score: ' + score, '30px Comic Sans MS',
+    //     0, 50, 'red')
+
+    // document.getElementById("displayscore").classList.add("show")//displays gameover
+    // document.getElementById("totalscore").innerHTML = "player 1 score " + score
+    // document.getElementById("nextRound").classList.add("show")
+
+    // document.getElementById("winnermessage").innerHTML = score
+    // document.getElementById("totalscore").classList.add("show")
+    // document.getElementById("nextRound").addEventListener("click", function again() {
 }
+
+function gameOver2() {
+    let element = document.getElementById(player2Default.element);
+    let laser = document.getElementById(laser2Defualt.element);
+    element.style.visibility = 'hidden';
+    laser.style.visibility = 'hidden';
+    element = document.getElementById('winnermessage');
+    element.style.visibility = 'visible';
+    let totalScoreElement = document.getElementById("winnermessage")
+    totalScoreElement.classList.add("show")
+        // totalScoreElement.firstChild.innerText = "testing" + score
+    document.getElementById("displayscore").innerText = "Player 2 score is " + score
+    if (player2Default == P1Score) {
+        P2Score += score
+    }
+    //     // console.log(totalScoreElement.firstChild);
+    //     // text('Score: ' + score, '30px Comic Sans MS',
+    //     //     0, 50, 'red')
+
+    //     // document.getElementById("displayscore").classList.add("show")//displays gameover
+    //     // document.getElementById("totalscore").innerHTML = "player 1 score " + score
+    //     // document.getElementById("nextRound").classList.add("show")
+
+    //     // document.getElementById("winnermessage").innerHTML = score
+    //     // document.getElementById("totalscore").classList.add("show")
+    //     // document.getElementById("nextRound").addEventListener("click", function again() {
+    // }
+
+}
+
+function finalScore() {
+    document.getElementById("winnermessage").classList.add("show")
+
+}
+
+function restart() {
+    document.getElementById("nextRound").addEventListener("click", function again() {
+
+        for (let i = 0; i < enemies.length; i++) {
+            if (enemies[i].y + enemies[i].h >= 2) { // removes enemies after a certain part of the screen
+                let element = document.getElementById(enemies[i].element);
+                element.style.visibility = 'hidden';
+                element.parentNode.removeChild(element);
+                enemies.splice(i, 1);
+                i--;
+            }
+        }
+        lastLoopRun = 0
+        score = 0
+        gametimelength = 0
+        controller = new Object();
+        enemies = new Array();
+        // let gameOver = document.getElementById(gameover);
+        // player = new Player('player1', 600, 900, 20, 20)
+        // setting up player 1 default map
+        // let elementName = 'player2';
+        // let player2 = createSprite(elementName, 600, 900, 20, 20)
+        // let element = document.createElement('div');
+        // element.id = player2.element;
+        // element.className = 'player2';
+
+        // let elementName2 = 'laser2';
+        // let laser2 = createSprite(elementName2, 600, 900, 20, 20)
+        // let element2 = document.createElement('div');
+        // element2.id = laser2.element2;
+        // element2.className = 'laser2';
+        // showSprites(setPosition(player2))
+        // showSprites(setPosition(laser2))
+        // updatePositions(laser2)
+        let element = document.getElementById(player1Default.element);
+        let laser = document.getElementById(laser1Defualt.element);
+        element.style.visibility = 'visible';
+        laser.style.visibility = 'visible';
+
+
+        let totalScoreElement = document.getElementById("totalscore")
+        totalScoreElement.style.visibility = 'hidden';
+        element = document.getElementById('gameover');
+        element.style.visibility = 'hidden';
+
+        // let element = document.getElementById(player2);
+        // let laser = document.getElementById(laser2);
+        // showSprites(setPosition(player2Default.element))
+        // showSprites(setPosition(laser2Defualt.laser))
+        // let gameOver = document.getElementById(gameover);
+        // element.style.visibility = 'visible';
+        // laser.style.visibility = 'visible';
+        // element.style.visibility = 'visible';
+        // laser.style.visibility = 'visible';
+        // gameOver.style.visibility = 'hidden';
+        // let tag = document.createElement
+        // let textScore = document.createTextNode("")
+        // textScore = document.createElement("p")
+        // textScore = document.getElementById("displayScore1").innerHTML = "player 1 score " + score
+        // document.getElementById("totalscore").classList.add("hide")
+        // let gameOverReset = document.getElementById("gameover")
+        // gameOverReset.style.visibility = 'hidden'
+        // player2Default = createSprite('player2', 600, 900, 20, 20); // setting up player 1 default map
+        // laser2Defualt = createSprite('laser2', 0, -120, 2, 50);
+        // resetting enemies
+        // for (let i = 0; i < enemies.length; i++) {
+        //     if (intersects(laser1Defualt, enemies[i])) {
+        //         let element = document.getElementById(enemies[i].element);
+        //         element.style.visibility = 'hidden';
+        //         element.parentNode.removeChild(element);
+        //         enemies.splice(i, 1);
+        //         i--;
+        // let resetElement = document.children(enemies);
+        // let resetElement = document.getElementsByClassName("enemies")
+        // document.removeChild(resetElement);
+        // element.id = enemy.element;
+        // element.className = 'enemy';
+        // document.children[0].appendChild(element);
+
+        // start();
+        // stop();
+        gameLoop();
+    })
+}
+restart();
 
 //show sprites function
 function showSprites() {
     setPosition(player1Default);
     setPosition(laser1Defualt);
+    // setPosition(player2Default); // added new
+    // setPosition(laser2Defualt); //added new
+    for (let i = 0; i < enemies.length; i++) {
+        setPosition(enemies[i]);
+    }
+    let scoreElement = document.getElementById('score');
+    scoreElement.innerHTML = 'Score: ' + score;
+}
+
+function showSprites2() {
+    setPosition(player2Default);
+    setPosition(laser2Defualt);
+    // setPosition(player2Default); // added new
+    // setPosition(laser2Defualt); //added new
     for (let i = 0; i < enemies.length; i++) {
         setPosition(enemies[i]);
     }
@@ -166,6 +364,15 @@ function updatePositions() {
     laser1Defualt.y -= 30; //laser fire speed
 }
 
+function updatePositions2() {
+    for (let i = 0; i < enemies.length; i++) {
+        enemies[i].y += 4;
+        enemies[i].x += getRandom(7) - 3;
+        setBoundry(enemies[i], true)
+    }
+    laser2Defualt.y -= 30; //laser fire speed
+}
+
 //enemies function
 function addEnemy() {
     var interval = 50;
@@ -178,12 +385,14 @@ function addEnemy() {
     }
     if (getRandom(interval) == 0) { //generating random enemies amount
         let elementName = 'enemy' + getRandom(1000000000);
-        let enemy = createSprite(elementName, getRandom(1050), -10, 15, 15)
+        let enemy = createSprite(elementName, getRandom(900), -10, 15, 15)
         let element = document.createElement('div');
         element.id = enemy.element;
         element.className = 'enemy';
         document.children[0].appendChild(element);
         enemies[enemies.length] = enemy;
+        console.log(enemies);
+        console.log(typeof(enemies));
     }
 }
 //random function for enemies
@@ -195,10 +404,16 @@ function getRandom(maxSize) {
 function gameLoop() {
     if (new Date().getTime() - lastLoopRun > 40) {
         updatePositions();
+        updatePositions2();
         handleControls();
+        handleControls2();
         checkCollisions();
+        // checkCollisions2();
         addEnemy();
         showSprites();
+        showSprites2();
+        restart();
+
 
         lastLoopRun = new Date().getTime();
         gametimelength++;
@@ -210,23 +425,27 @@ function gameLoop() {
 }
 
 //this class provides score count for both players
-class Player {
-    constructor(name, display, winnerstate) {
-        this.name = name;
-        this.points = 0;
-        this.display = display;
-        this.winnerstate = winnerstate
-    }
-    totalScore(pointsValue) {
-        this.points = pointsValue;
-        this.display.children[0].innerText = this.points
-        console.log(pointsValue);
-    }
-    setup() {
-        this.display = score
-        return this;
-    }
-}
+// class Player {
+//     constructor(name, display, winnerstate) {
+//         this.name = name;
+//         this.points = 0;
+//         this.display = display;
+//         this.winnerstate = winnerstate
+//     }
+//     totalScore(pointsValue) {
+//         this.points = pointsValue;
+//         this.display.children[0].innerText = this.points
+//         console.log(pointsValue);
+//         return pointsValue;
+//     }
+//     setup() {
+//         this.display = score
+//         return this;
+//     }
+//     winnerstate() {
+
+//     }
+// }
 
 
 
@@ -241,12 +460,15 @@ document.onkeyup = function(evt) {
 // function to set default position of shooter1 
 let player1Default = createSprite('player1', 600, 900, 20, 20); // setting up player 1 default map
 let laser1Defualt = createSprite('laser1', 0, -120, 2, 50); // setting enemies location and size default
+let player2Default = createSprite('player2', 600, 900, 20, 20); // setting up player 1 default map
+let laser2Defualt = createSprite('laser2', 0, -120, 2, 50); // setting enemies location and size default
 
 //setting up players
-const player1 = new Player('player1', document.getElementById("totalscore"), document.getElementById("winnermessage"))
-const player2 = new Player('player1', document.getElementById("totalscore"), document.getElementById("winnermessage"))
+// const player1 = new Player('player1', document.getElementById("totalscore"), document.getElementById("winnermessage"))
+// const player2 = new Player('player1', document.getElementById("totalscore"), document.getElementById("winnermessage"))
 
-player1.setup();
-player2.setup();
+// player1.setup();
+// player2.setup();
 
 gameLoop();
+restart();

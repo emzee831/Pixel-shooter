@@ -13,16 +13,20 @@
 <body>
     <div id="gamebackground"></div>
     <div class="shooter1" id="player1"></div>
+    <div class="shooter2" id="player2"></div>
     <div id="laser1"></div>
+    <div id="laser2"></div>
     <div id="score"></div>
-    <div id="gameover">GAME OVER!</div>
+    <div id="gameover">GAME OVER!
+        <!-- <button class="next-Round" id="nextRound" onclick="restart()">Press to play player 2 round</button> -->
+    </div>
     <div class="total-score" id="totalscore">
-        <div data-totalscore-text>player score</div>
-        <button id="nextRound">Play Next Round</button>
+        <h1 class="displayScore1" id="displayscore">player score</h1>
+        <button class="next-Round" id="nextRound" onclick="restart()">Press to play player 2 round</button>
     </div>
     <div class="winner-message" id="winnermessage">
         <div data-winner-message-text>player wins</div>
-        <button id="restartGame">Restart Game</button>
+        <button id="restartGame" onclick="restart()">Restart Game</button>
     </div>
     <script src="main.js"></script>
 </body>

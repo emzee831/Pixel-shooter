@@ -19,12 +19,28 @@ body {
 }
 
 .shooter1 {
-    background-color: red;
-    background-image: url(imgs/eyes.png);
-    background-size: 50px;
+    background-color: rgb(0, 0, 0);
+    background-image: url(imgs/spaceship.png);
+    background-size: 45px;
+    background-repeat: no-repeat;
+    /* left: 5px; */
     width: 47px;
     height: 41px;
     position: absolute;
+    color: black;
+}
+
+.shooter2 {
+    background-color: rgb(0, 0, 0);
+    background-image: url(imgs/spaceship.png);
+    background-size: 45px;
+    background-repeat: no-repeat;
+    /* left: 5px; */
+    width: 47px;
+    height: 41px;
+    position: absolute;
+    color: black;
+    visibility: hidden;
 }
 
 #laser1 {
@@ -32,6 +48,14 @@ body {
     width: 2px;
     height: 50px;
     position: absolute;
+}
+
+#laser2 {
+    background: green;
+    width: 2px;
+    height: 50px;
+    position: absolute;
+    /* visibility: hidden; */
 }
 
 .enemy {
@@ -50,6 +74,7 @@ body {
 }
 
 #gameover {
+    background-color: blue;
     color: red;
     font-size: 20px;
     position: absolute;
@@ -82,7 +107,27 @@ body {
     cursor: pointer;
 }
 
-.total-score .show {
+.total-score.show {
+    display: flex;
+}
+
+.total-score.hide {
+    display: none;
+}
+
+#displayScore1 {
+    margin: 10px;
+    width: auto;
+    height: 40px;
+    background: url(imgs/eyes.png) no-repeat bottom;
+    background-size: 100% 100%;
+    color: red;
+    background-color: red;
+    display: block;
+    visibility: visible;
+}
+
+.displayScore1.show {
     display: flex;
 }
 
@@ -110,6 +155,11 @@ body {
     cursor: pointer;
 }
 
-.winner-message .show {
+.winner-message.show {
     display: flex;
 }
+
+
+/* .winner-message.hide {
+    display: none;
+} */
